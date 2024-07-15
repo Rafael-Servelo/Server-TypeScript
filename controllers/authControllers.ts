@@ -29,7 +29,7 @@ const openID = async (req: any, res: any) => {
  * Register User
  */
 const registerUser = async (req: any, res: any) => {
-  const { name, email, password, confirmPassword } = req.body;
+  const { name, email, password, confirmPassword, isAdm } = req.body;
 
   // validations
   if (!name) {
@@ -44,6 +44,7 @@ const registerUser = async (req: any, res: any) => {
   if (password !== confirmPassword) {
     return res.status(422).json({ msg: "As senhas não conferem!" });
   }
+
 
   // check if user exists
   const userExists = await User.findOne({ email: email });
@@ -61,6 +62,7 @@ const registerUser = async (req: any, res: any) => {
     name,
     email,
     password: passwordHash,
+    isAdm
   });
 
   try {
