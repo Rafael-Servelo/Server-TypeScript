@@ -28,7 +28,7 @@ app.use(express.static(__dirname + '/../public'))
 
 import router from "../routers/authRouter";
 
-app.use("/auth", router);
+app.use("//auth", router);
 
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
 
