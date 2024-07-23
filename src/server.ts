@@ -9,6 +9,8 @@ const app = express();
 
 const allowedDomains = [
   "https://luaminguante.onrender.com",
+  "http://www.luaminguante.store/",
+  "http://192.168.18.7:8080",
   "http://192.168.18.7:8080",
 ];
 
