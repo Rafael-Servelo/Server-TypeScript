@@ -5,12 +5,12 @@ import cors from "cors";
 
 dotenv.config();
 const app = express();
+const baseDir = `${__dirname}/public/`
 
 app.use(cors());
 app.use(express.json());
-app.get("/server", (req, res) => {
-  res.status(200).json({ msg: "O servidor esta rodando!" });
-});
+app.use(express.static(`${baseDir}`))
+app.get('/server', (req, res) => res.sendFile('index.html' , { root : baseDir } ))
 
 import router from "../routers/authRouter";
 
