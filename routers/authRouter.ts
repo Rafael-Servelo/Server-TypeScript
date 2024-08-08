@@ -9,6 +9,7 @@ router.get("/:id", checkToken, authController.openID);
 router.post("/register", authController.registerUser);
 router.post("/login", authController.login);
 router.post('/forgot_password', authController.forgot)
+router.post('/reset_password', authController.resetPassword)
 
 function checkToken(req: any, res: any, next: any) {
   const authHeader = req.headers["authorization"];
