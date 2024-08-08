@@ -1,6 +1,8 @@
 import User from "../models/User";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
+import mailer from "../src/mailer";
 
 /**
  * Public Route
@@ -45,9 +47,8 @@ const registerUser = async (req: any, res: any) => {
     return res.status(422).json({ msg: "As senhas não conferem!" });
   }
 
-
   // check if user exists
-  const userExists = await User.findOne({ email: email });
+  const userExists = await User.findOne({ email });
 
   if (userExists) {
     return res.status(422).json({ msg: "Por favor, utilize outro email!" });
@@ -62,7 +63,7 @@ const registerUser = async (req: any, res: any) => {
     name,
     email,
     password: passwordHash,
-    isAdm
+    isAdm,
   });
 
   try {
@@ -125,9 +126,57 @@ const login = async (req: any, res: any) => {
   }
 };
 
+/**
+ * Forgot Password
+ */
+const forgot = async (req: any, res: any) => {
+  const { email } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ msg: "Usuário não encontrado!" });
+    }
+
+    const token = crypto.randomBytes(20).toString("hex");
+
+    const now = new Date();
+    now.setHours(now.getHours() + 1);
+
+    await User.findByIdAndUpdate(user.id, {
+      $set: {
+        passwordResetToken: token,
+        passwordResetExpires: now,
+      },
+    });
+
+    mailer.sendMail(
+      {
+        to: email,
+        from: "rafael.servelo@gmail.com",
+        subject: "Redefinir a senha!",
+        html: `<p>Você esqueceu sua senha? Não tem problema utilize esse token: ${token}</p>`,
+      },
+      (err) => {
+        if (err) {
+          console.log(err)
+          return res
+            .status(400)
+            .send({ msg: "Cannot send forgot password email" });
+        }
+        return res.send();
+      }
+    );
+  } catch (err) {
+    res.status(400).send({ msg: "erro on forgot password, try again" });
+  }
+};
+
 export default {
   open,
   openID,
   registerUser,
   login,
+  forgot,
 };
