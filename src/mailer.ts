@@ -9,7 +9,7 @@ export const mailer = nodemailer.createTransport({
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS
   }
-});
+} as any);
 
 mailer.use('compile', hbs({
   viewEngine: 'handlebars' as any,

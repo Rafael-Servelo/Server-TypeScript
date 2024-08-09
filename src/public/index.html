@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="PT-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rafael Servelo Server</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div>
+      <h1>The server is running!</h1>
+    </div>
+
+    <style>
+      /*:: Style Server
+@author: Rafael Servelo
+@version: 1.0.0
+@date:2024/07/15
+Style Server ::*/
+      :root {
+        --color-primary: #282a36;
+        --color-secondary: #e28426;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
+
+      html {
+        font: 13px JetBrains Mono, monospace;
+        background-color: var(--color-primary);
+        color: var(--color-secondary);
+        animation: bg-animate 3s linear infinite;
+      }
+
+      @keyframes bg-animate {
+        from {
+          filter: hue-rotate(0deg);
+        }
+        to {
+          filter: hue-rotate(360deg);
+        }
+      }
+
+      div {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    </style>
+  </body>
+</html>
