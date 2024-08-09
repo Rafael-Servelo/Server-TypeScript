@@ -1,5 +1,6 @@
-export const forgotPasswordHTML = (req:any, token:string ) => {
-    return `
+export const forgotPasswordHTML = (req: any, token: string) => {
+  let url = `${req.protocol}://${req.get("host")}/?token=${token}`;
+  return `
         <!DOCTYPE html>
         <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -108,11 +109,7 @@ export const forgotPasswordHTML = (req:any, token:string ) => {
                               </tr>
                               <tr>
                                 <td style="padding: 0 0 24px 0;">
-                                  <a class="button" href="${
-                                    req.protocol
-                                  }://${req.get(
-          "host"
-        )}/server/?token=${token}" title="Reset Password" style="width: 100%; background: #4C83EE; text-decoration: none; display: inline-block; padding: 10px 0; color: #fff; font-size: 14px; line-height: 21px; text-align: center; font-weight: bold; border-radius: 7px;">Refinir Senha</a>
+                                  <a class="button" href="${url}" title="Reset Password" style="width: 100%; background: #4C83EE; text-decoration: none; display: inline-block; padding: 10px 0; color: #fff; font-size: 14px; line-height: 21px; text-align: center; font-weight: bold; border-radius: 7px;">Refinir Senha</a>
                                 </td>
                               </tr>
                               <tr>
@@ -146,5 +143,5 @@ export const forgotPasswordHTML = (req:any, token:string ) => {
           </table>
         </body>
         </html>
-        `
-}
+        `;
+};
