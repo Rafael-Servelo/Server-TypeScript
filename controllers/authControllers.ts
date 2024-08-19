@@ -186,15 +186,11 @@ const resetPassword = async (req: any, res: any) => {
     }
 
     if (token !== user.passwordResetToken) {
-      res.status(400).send({ msg: "Token inválido!" });
+      return res.status(400).send({ msg: "Token inválido!" });
     }
 
     if (now > user.passwordResetExpires) {
-      res
-        .status(400)
-        .send({
-          msg: "Token expirado, gere uma nova solicitação de resetar a senha!",
-        });
+      return res.status(400).send({ msg: "Token expirado, gere uma nova solicitação de resetar a senha!" });
     }
 
     if (password !== confirmPassword) {
