@@ -1,5 +1,5 @@
 export const forgotPasswordHTML = (req: any, token: string) => {
-  let url = `${req.protocol}://${req.get("host")}/?token=${token}`;
+  let url = `${req.protocol}://${req.get("host")}/esqueci-a-senha?token=${token}`;
   return `
         <!DOCTYPE html>
         <html xmlns="http://www.w3.org/1999/xhtml">
