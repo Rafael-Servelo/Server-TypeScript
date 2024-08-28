@@ -1,6 +1,6 @@
 export const forgotPasswordHTML = (req: any, token: string) => {
   let logo = `${req.protocol}://${req.get("host")}/assets/server/img/logo-claro.png`;
-  let url = `${req.protocol}://${req.get("host")}/esqueci-a-senha?token=${token}`;
+  let url = `${req.protocol}://${req.get("host")}/?page=1&token=${token}`;
   return `
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
