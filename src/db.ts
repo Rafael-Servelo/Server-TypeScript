@@ -13,6 +13,6 @@ async function main() {
   console.log("Banco de dados conectado!");
 }
 
-main().catch((err)=> console.log(err))
+main().catch((err) => console.log(err));
 
-export default main
+export default main;
