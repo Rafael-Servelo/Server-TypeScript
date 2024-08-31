@@ -1,3 +1,8 @@
+/**
+ * @author Rafael Servelo
+ * @description Projeto realizado para a loja Lua Minguante, onde eu mesmo fiz o front-end e o back-end.
+ */
+
 import dotenv from "dotenv";
 import "./db";
 import express from "express";
