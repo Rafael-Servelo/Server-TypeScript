@@ -1,11 +1,38 @@
 import Store from "../models/Store";
 
+// Search products
+const search = async (req: any, res: any) => {
+  const result = await Store.aggregate([
+    {
+      $search: {
+        index: "search-text",
+        phrase: {
+          query:req.query.search,
+          path: "product",
+          // allowAnalyzedField: true
+        }
+      },
+    },
+  ]);
+
+  try {
+    res.status(200).json({ result });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      msg: "Erro inesperado no servidor, tente novamente mais tarde!",
+    });
+  }
+};
+
+// Get products
 const open = async (req: any, res: any) => {
   const store = await Store.find();
 
   res.status(200).json({ products: store });
 };
 
+// Register products
 const registerProduct = async (req: any, res: any) => {
   const { product, images } = req.body;
 
@@ -23,8 +50,10 @@ const registerProduct = async (req: any, res: any) => {
       .json({ msg: "Este Produto já está cadastrado no sistema!" });
   }
 
-  if(!images){
-    return res.status(422).json({ msg: "Necessário adicionar imagem do produto!" });
+  if (!images) {
+    return res
+      .status(422)
+      .json({ msg: "Necessário adicionar imagem do produto!" });
   }
 
   const date = new Date();
@@ -54,4 +83,5 @@ const registerProduct = async (req: any, res: any) => {
 export default {
   open,
   registerProduct,
+  search,
 };

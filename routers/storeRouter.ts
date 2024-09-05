@@ -4,6 +4,7 @@ const router = express.Router();
 import storeControllers from "../controllers/storeControllers";
 import User from "../models/User";
 
+router.get("/", storeControllers.search);
 router.get("/products", storeControllers.open);
 router.post("/set_product", checkUser, storeControllers.registerProduct);
 
