@@ -6,13 +6,14 @@ const Store = mongoose.model("Store", {
   colors: Array<string[]>,
   datePost: Date,
   description: String,
+  discountPrice: Number,
   height: Number, // Altura (cm)
   id: Number,
   images: Array<string[]>,
   length: Number, // Comprimento (cm)
   numberSold: Number,
   numberReview: Number,
-  price: String,
+  price: Number,
   product: String,
   promotion: Boolean,
   rating: Number,

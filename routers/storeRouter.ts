@@ -7,6 +7,8 @@ import User from "../models/User";
 router.get("/", storeControllers.search);
 router.get("/products", storeControllers.open);
 router.post("/set_product", checkUser, storeControllers.registerProduct);
+router.delete('/delete_product', storeControllers.deleteProduct)
+
 
 async function checkUser(req: any, res: any, next: any) {
   const authHeader = req.headers;

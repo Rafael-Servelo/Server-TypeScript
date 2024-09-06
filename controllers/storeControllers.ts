@@ -51,7 +51,7 @@ const registerProduct = async (req: any, res: any) => {
     sizes,
     colors,
   } = req.body;
-  let { numberSold, rating, numberReview } = req.body;
+  let { numberSold, rating, numberReview, discountPrice } = req.body;
 
   // validations
   if (!product) {
@@ -116,6 +116,14 @@ const registerProduct = async (req: any, res: any) => {
       .json({ msg: "Necessário informar a categoria do produto!" });
   }
 
+  if (promotion) {
+    if (!discountPrice) {
+      return res
+        .status(422)
+        .json({ msg: "Necessário passar o valor com desconto" });
+    }
+  }
+
   // check numberSold exists
   if (!numberSold) {
     numberSold = 0;
@@ -145,6 +153,7 @@ const registerProduct = async (req: any, res: any) => {
     colors,
     datePost,
     description,
+    discountPrice,
     height,
     id,
     images,
@@ -173,8 +182,24 @@ const registerProduct = async (req: any, res: any) => {
   }
 };
 
+const deleteProduct = async (req: any, res: any) => {
+  const { id } = req.body;
+  const store = await Store.deleteOne({
+    id,
+  });
+  console.log(store);
+
+  if (!id) {
+    res.status(422).json({ msg: "A ID do produto é obrigatório!" });
+  }
+  if (store) {
+    res.status(200).json({ msg: "Produto deletado com sucesso!" });
+  }
+};
+
 export default {
   open,
   registerProduct,
   search,
+  deleteProduct,
 };
