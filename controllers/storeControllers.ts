@@ -7,10 +7,10 @@ const search = async (req: any, res: any) => {
       $search: {
         index: "search-text",
         phrase: {
-          query:req.query.search,
+          query: req.query.search,
           path: "product",
           // allowAnalyzedField: true
-        }
+        },
       },
     },
   ]);
@@ -34,7 +34,24 @@ const open = async (req: any, res: any) => {
 
 // Register products
 const registerProduct = async (req: any, res: any) => {
-  const { product, images } = req.body;
+  const {
+    product,
+    images,
+    description,
+    price,
+    width,
+    height,
+    length,
+    weight,
+    tags,
+    promotion,
+    amount,
+    category,
+    specifications,
+    sizes,
+    colors,
+  } = req.body;
+  let { numberSold, rating, numberReview } = req.body;
 
   // validations
   if (!product) {
@@ -50,23 +67,99 @@ const registerProduct = async (req: any, res: any) => {
       .json({ msg: "Este Produto já está cadastrado no sistema!" });
   }
 
+  // check if image exists
   if (!images) {
     return res
       .status(422)
       .json({ msg: "Necessário adicionar imagem do produto!" });
   }
 
-  const date = new Date();
+  // check if description exists
+  if (!description) {
+    return res.status(422).json({ msg: "Descrição do produto obrigatório!" });
+  }
 
+  // check if description exists
+  if (!price) {
+    return res.status(422).json({ msg: "Preço do produto obrigatório!" });
+  }
+
+  // check if width exists
+  if (!width) {
+    return res.status(422).json({ msg: "Largura do produto obrigatório!" });
+  }
+
+  // check if height exists
+  if (!height) {
+    return res.status(422).json({ msg: "Altura do produto obrigatório!" });
+  }
+
+  // check if length exists
+  if (!length) {
+    return res.status(422).json({ msg: "Comprimento do produto obrigatório!" });
+  }
+
+  // check if weight exists
+  if (!weight) {
+    return res.status(422).json({ msg: "Peso do produto obrigatório!" });
+  }
+
+  // check if amount exists
+  if (!amount) {
+    return res.status(422).json({ msg: "Necessário passar a quantidade!" });
+  }
+
+  // check if category exists
+  if (!category) {
+    return res
+      .status(422)
+      .json({ msg: "Necessário informar a categoria do produto!" });
+  }
+
+  // check numberSold exists
+  if (!numberSold) {
+    numberSold = 0;
+  }
+
+  // check rating exists
+  if (!rating) {
+    rating = 0;
+  }
+
+  // check numberReview exists
+  if (!numberReview) {
+    numberReview = 0;
+  }
+
+  // add Date
+  const date = new Date();
   const datePost = date;
+
+  // add ID Product
   const id = date.getTime();
 
   // create product
   const store = new Store({
-    product,
-    images,
+    amount,
+    category,
+    colors,
     datePost,
+    description,
+    height,
     id,
+    images,
+    length,
+    numberSold,
+    numberReview,
+    price,
+    product,
+    promotion,
+    rating,
+    sizes,
+    specifications,
+    tags,
+    weight,
+    width,
   });
   try {
     await store.save();
