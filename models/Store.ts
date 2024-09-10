@@ -20,6 +20,7 @@ const Store = mongoose.model("Store", {
   sizes: Array<string[]>,
   specifications: String,
   tags: Array<string[]>,
+  variations: Array<string>,
   weight: Number, // Peso (kg)
   width: Number,  // Largura (cm)
 } as any);

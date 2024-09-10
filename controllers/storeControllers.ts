@@ -50,6 +50,7 @@ const registerProduct = async (req: any, res: any) => {
     specifications,
     sizes,
     colors,
+    variations,
   } = req.body;
   let { numberSold, rating, numberReview, discountPrice } = req.body;
 
@@ -187,7 +188,6 @@ const deleteProduct = async (req: any, res: any) => {
   const store = await Store.deleteOne({
     id,
   });
-  console.log(store);
 
   if (!id) {
     res.status(422).json({ msg: "A ID do produto é obrigatório!" });
@@ -197,9 +197,69 @@ const deleteProduct = async (req: any, res: any) => {
   }
 };
 
+const updateProduct = async (req: any, res: any) => {
+  const { id } = req.headers;
+  const {
+    product,
+    images,
+    description,
+    price,
+    width,
+    height,
+    length,
+    weight,
+    tags,
+    promotion,
+    amount,
+    category,
+    specifications,
+    sizes,
+    colors,
+    variations,
+  } = req.body;
+  let { numberSold, rating, numberReview, discountPrice } = req.body;
+  // add Date
+  const date = new Date();
+  const datePost = date;
+
+  const store = new Store({
+    amount,
+    category,
+    colors,
+    datePost,
+    description,
+    discountPrice,
+    height,
+    id,
+    images,
+    length,
+    numberSold,
+    numberReview,
+    price,
+    product,
+    promotion,
+    rating,
+    sizes,
+    specifications,
+    tags,
+    variations,
+    weight,
+    width,
+  });
+
+  try {
+    await store.save();
+
+    res.status(200).json({ msg: "Produto atualizado com sucesso!" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export default {
   open,
   registerProduct,
   search,
   deleteProduct,
+  updateProduct,
 };

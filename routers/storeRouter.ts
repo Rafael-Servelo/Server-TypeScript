@@ -8,6 +8,7 @@ router.get("/", storeControllers.search);
 router.get("/products", storeControllers.open);
 router.post("/set_product", checkUser, storeControllers.registerProduct);
 router.delete('/delete_product', storeControllers.deleteProduct)
+router.put('/update_product', storeControllers.updateProduct)
 
 
 async function checkUser(req: any, res: any, next: any) {
