@@ -168,6 +168,7 @@ const registerProduct = async (req: any, res: any) => {
     sizes,
     specifications,
     tags,
+    variations,
     weight,
     width,
   });
@@ -189,70 +190,38 @@ const deleteProduct = async (req: any, res: any) => {
     id,
   });
 
+  if (store === null) {
+    return res.status(422).json({ msg: "ID inválido!" });
+  }
   if (!id) {
-    res.status(422).json({ msg: "A ID do produto é obrigatório!" });
+    return res.status(422).json({ msg: "A ID do produto é obrigatório!" });
   }
   if (store) {
-    res.status(200).json({ msg: "Produto deletado com sucesso!" });
+    return res.status(200).json({ msg: "Produto deletado com sucesso!" });
   }
 };
 
 const updateProduct = async (req: any, res: any) => {
   const { id } = req.headers;
-  const {
-    product,
-    images,
-    description,
-    price,
-    width,
-    height,
-    length,
-    weight,
-    tags,
-    promotion,
-    amount,
-    category,
-    specifications,
-    sizes,
-    colors,
-    variations,
-  } = req.body;
-  let { numberSold, rating, numberReview, discountPrice } = req.body;
+
   // add Date
   const date = new Date();
-  const datePost = date;
+  let update = req.body;
 
-  const store = new Store({
-    amount,
-    category,
-    colors,
-    datePost,
-    description,
-    discountPrice,
-    height,
-    id,
-    images,
-    length,
-    numberSold,
-    numberReview,
-    price,
-    product,
-    promotion,
-    rating,
-    sizes,
-    specifications,
-    tags,
-    variations,
-    weight,
-    width,
-  });
+  update.datePost = date;
 
-  try {
-    await store.save();
+  const store = await Store.findOneAndUpdate({ id }, update);
 
-    res.status(200).json({ msg: "Produto atualizado com sucesso!" });
-  } catch (error) {
-    console.log(error);
+  if (!id) {
+    return res.status(422).json({ msg: "A ID do produto é obrigatório!" });
+  }
+
+  if (store === null) {
+    return res.status(422).json({ msg: "ID inválido!" });
+  }
+
+  if (store) {
+    return res.status(200).json({ msg: "Produto atualizado com sucesso!" });
   }
 };
 
