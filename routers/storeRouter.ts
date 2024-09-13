@@ -7,8 +7,8 @@ import User from "../models/User";
 router.get("/", storeControllers.search);
 router.get("/products", storeControllers.open);
 router.post("/set_product", checkUser, storeControllers.registerProduct);
-router.delete('/delete_product', storeControllers.deleteProduct)
-router.put('/update_product', storeControllers.updateProduct)
+router.delete('/delete_product', checkUser, storeControllers.deleteProduct)
+router.put('/update_product', checkUser, storeControllers.updateProduct)
 
 
 async function checkUser(req: any, res: any, next: any) {
