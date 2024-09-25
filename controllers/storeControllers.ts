@@ -1,7 +1,8 @@
+import { Request, Response } from "express";
 import Store from "../models/Store";
 
 // Search products
-const search = async (req: any, res: any) => {
+const search = async (req: Request, res: Response) => {
   const result = await Store.aggregate([
     {
       $search: {
@@ -26,14 +27,14 @@ const search = async (req: any, res: any) => {
 };
 
 // Get products
-const open = async (req: any, res: any) => {
+const open = async (req: Request, res: Response) => {
   const store = await Store.find();
 
   res.status(200).json({ products: store });
 };
 
 // Register products
-const registerProduct = async (req: any, res: any) => {
+const registerProduct = async (req: Request, res: Response) => {
   const {
     product,
     images,
@@ -184,7 +185,7 @@ const registerProduct = async (req: any, res: any) => {
   }
 };
 
-const deleteProduct = async (req: any, res: any) => {
+const deleteProduct = async (req: Request, res: Response) => {
   const { id } = req.body;
   const store = await Store.deleteOne({
     id,
@@ -201,7 +202,7 @@ const deleteProduct = async (req: any, res: any) => {
   }
 };
 
-const updateProduct = async (req: any, res: any) => {
+const updateProduct = async (req: Request, res: Response) => {
   const { id } = req.headers;
 
   // add Date

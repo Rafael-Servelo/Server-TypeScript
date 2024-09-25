@@ -4,18 +4,19 @@ import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import { mailer } from "../src/mailer";
 import { forgotPasswordHTML } from "../src/resources/mail/auth/forgot-password";
+import { Request, Response } from "express";
 
 /**
  * Public Route
  */
-const open = async (req: any, res: any) => {
+const open = async (req: Request, res: Response) => {
   res.status(200).json({ msg: "The server is running!" });
 };
 
 /**
  * Private Route
  */
-const openID = async (req: any, res: any) => {
+const openID = async (req: Request, res: Response) => {
   const id = req.params.id;
 
   // check if user exists
@@ -31,7 +32,7 @@ const openID = async (req: any, res: any) => {
 /**
  * Register User
  */
-const registerUser = async (req: any, res: any) => {
+const registerUser = async (req: Request, res: Response) => {
   const { name, email, password, confirmPassword, isAdm } = req.body;
 
   // validations
@@ -82,7 +83,7 @@ const registerUser = async (req: any, res: any) => {
 /**
  * Login User
  */
-const login = async (req: any, res: any) => {
+const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   // validations
@@ -130,7 +131,7 @@ const login = async (req: any, res: any) => {
 /**
  * Forgot Password
  */
-const forgot = async (req: any, res: any) => {
+const forgot = async (req: Request, res: Response) => {
   const { email } = req.body;
 
   try {
@@ -174,7 +175,7 @@ const forgot = async (req: any, res: any) => {
   }
 };
 
-const resetPassword = async (req: any, res: any) => {
+const resetPassword = async (req: Request, res: Response) => {
   const { email, token, password, confirmPassword } = req.body;
   const now = new Date();
 
@@ -190,7 +191,11 @@ const resetPassword = async (req: any, res: any) => {
     }
 
     if (now > user.passwordResetExpires) {
-      return res.status(400).send({ msg: "Token expirado, gere uma nova solicitação de resetar a senha!" });
+      return res
+        .status(400)
+        .send({
+          msg: "Token expirado, gere uma nova solicitação de resetar a senha!",
+        });
     }
 
     if (password !== confirmPassword) {
@@ -204,7 +209,7 @@ const resetPassword = async (req: any, res: any) => {
 
     await user.save();
 
-    res.status(200).send({ msg: "Senha alterada com sucesso!"});
+    res.status(200).send({ msg: "Senha alterada com sucesso!" });
   } catch (err) {
     res.status(400).send({ msg: "Erro em resetar a senha, tente novamente!" });
   }

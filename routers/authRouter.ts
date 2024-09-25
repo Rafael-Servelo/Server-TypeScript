@@ -1,4 +1,4 @@
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 const router = express.Router();
 import jwt from "jsonwebtoken";
 
@@ -11,7 +11,7 @@ router.post("/login", authController.login);
 router.post('/forgot_password', authController.forgot)
 router.post('/reset_password', authController.resetPassword)
 
-function checkToken(req: any, res: any, next: any) {
+function checkToken(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers["authorization"];
   const token = authHeader?.split(" ")[1];
 
@@ -26,7 +26,6 @@ function checkToken(req: any, res: any, next: any) {
 
     next();
   } catch (error) {
-    console.error(error);
     res.status(400).json({ msg: "Token inválido!" });
   }
 }

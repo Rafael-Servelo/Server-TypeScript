@@ -1,4 +1,4 @@
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 const router = express.Router();
 
 import storeControllers from "../controllers/storeControllers";
@@ -7,11 +7,10 @@ import User from "../models/User";
 router.get("/", storeControllers.search);
 router.get("/products", storeControllers.open);
 router.post("/set_product", checkUser, storeControllers.registerProduct);
-router.delete('/delete_product', checkUser, storeControllers.deleteProduct)
-router.put('/update_product', checkUser, storeControllers.updateProduct)
+router.delete("/delete_product", checkUser, storeControllers.deleteProduct);
+router.put("/update_product", checkUser, storeControllers.updateProduct);
 
-
-async function checkUser(req: any, res: any, next: any) {
+async function checkUser(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers;
   const user = await User.findOne({ email: authHeader.email });
 
