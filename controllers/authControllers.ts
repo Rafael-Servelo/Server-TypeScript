@@ -33,7 +33,17 @@ const openID = async (req: Request, res: Response) => {
  * Register User
  */
 const registerUser = async (req: Request, res: Response) => {
-  const { name, email, password, confirmPassword, isAdm } = req.body;
+  const {
+    address,
+    avatar,
+    cpf,
+    confirmPassword,
+    email,
+    isAdm,
+    name,
+    phone,
+    password,
+  } = req.body;
 
   // validations
   if (!name) {
@@ -42,18 +52,24 @@ const registerUser = async (req: Request, res: Response) => {
   if (!email) {
     return res.status(422).json({ msg: "O email é obrigatório!" });
   }
-  if (!password) {
-    return res.status(422).json({ msg: "A senha é obrigatório!" });
+  if (!cpf) {
+    return res.status(422).json({ msg: "O cpf é obrigatório!" });
+  }
+  if (!phone) {
+    return res.status(422).json({ msg: "O número de telefone é obrigatório!" });
+  }
+  if (!address) {
+    return res.status(422).json({ msg: "Necessário informar o endereço!" });
   }
   if (password !== confirmPassword) {
     return res.status(422).json({ msg: "As senhas não conferem!" });
   }
 
   // check if user exists
-  const userExists = await User.findOne({ email });
+  const userExists = await User.findOne({ name });
 
   if (userExists) {
-    return res.status(422).json({ msg: "Por favor, utilize outro email!" });
+    return res.status(422).json({ msg: "Este usuário ja existe no sistema!" });
   }
 
   // create password
@@ -62,8 +78,12 @@ const registerUser = async (req: Request, res: Response) => {
 
   // create usere
   const user = new User({
+    avatar,
     name,
     email,
+    cpf,
+    phone,
+    address,
     password: passwordHash,
     isAdm,
   });
@@ -191,11 +211,9 @@ const resetPassword = async (req: Request, res: Response) => {
     }
 
     if (now > user.passwordResetExpires) {
-      return res
-        .status(400)
-        .send({
-          msg: "Token expirado, gere uma nova solicitação de resetar a senha!",
-        });
+      return res.status(400).send({
+        msg: "Token expirado, gere uma nova solicitação de resetar a senha!",
+      });
     }
 
     if (password !== confirmPassword) {
