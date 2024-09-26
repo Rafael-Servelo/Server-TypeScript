@@ -2,15 +2,20 @@ import mongoose from "mongoose";
 import { address } from "../src/Templates/Template-User";
 
 const User = mongoose.model("User", {
+  address: {
+    require: true,
+    type: Array<typeof address>,
+  },
+  avatar: String,
+  cpf: {
+    require: true,
+    type: String,
+  },
   name: {
     require: true,
     type: String,
   },
   email: {
-    require: true,
-    type: String,
-  },
-  cpf: {
     require: true,
     type: String,
   },
@@ -21,10 +26,6 @@ const User = mongoose.model("User", {
   password: {
     require: true,
     type: String,
-  },
-  address: {
-    require: true,
-    type: Array<typeof address>,
   },
   isAdm: Boolean,
   passwordResetToken: String,
