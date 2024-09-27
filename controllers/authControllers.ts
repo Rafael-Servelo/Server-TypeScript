@@ -61,14 +61,23 @@ const registerUser = async (req: Request, res: Response) => {
   if (!address) {
     return res.status(422).json({ msg: "Necessário informar o endereço!" });
   }
+  if (password.length < 8) {
+    return res
+      .status(422)
+      .json({ msg: "A senha deve conter no mínimo 8 caracteres!" });
+  }
   if (password !== confirmPassword) {
     return res.status(422).json({ msg: "As senhas não conferem!" });
   }
 
   // check if user exists
-  const userExists = await User.findOne({ name });
+  const userExists = await User.findOne({ cpf });
+  const emailExists = await User.findOne({ email });
 
   if (userExists) {
+    return res.status(422).json({ msg: "Este usuário ja existe no sistema!" });
+  }
+  if (emailExists) {
     return res.status(422).json({ msg: "Este usuário ja existe no sistema!" });
   }
 
