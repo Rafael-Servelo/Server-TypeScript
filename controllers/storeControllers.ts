@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Store from "../models/Store";
+import User from "../models/User";
 
 // Search products
 const search = async (req: Request, res: Response) => {
@@ -186,16 +187,27 @@ const registerProduct = async (req: Request, res: Response) => {
 };
 
 const deleteProduct = async (req: Request, res: Response) => {
-  const { id } = req.body;
+  const { id, email } = req.body;
   const store = await Store.deleteOne({
     id,
   });
+  const adm = await User.findOne({ email });
 
-  if (store === null) {
-    return res.status(422).json({ msg: "ID inválido!" });
+  if (!adm) {
+    return res.status(404).json({ msg: "Usuário não encontrado!" });
   }
+  if (!adm.isAdm) {
+    return res.status(401).json({ msg: "Acesso negado!" });
+  }
+
   if (!id) {
     return res.status(422).json({ msg: "A ID do produto é obrigatório!" });
+  }
+  if (!email) {
+    return res.status(422).json({ msg: "Necessário informar o email!" });
+  }
+  if (store === null) {
+    return res.status(422).json({ msg: "ID inválido!" });
   }
   if (store) {
     return res.status(200).json({ msg: "Produto deletado com sucesso!" });
