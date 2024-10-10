@@ -7,12 +7,13 @@ import User from "../models/User";
 router.get("/", storeControllers.search);
 router.get("/products", storeControllers.open);
 router.post("/set_product", checkUser, storeControllers.registerProduct);
+router.post("/add_favorites", storeControllers.addFavorites);
 router.delete("/delete_product", storeControllers.deleteProduct);
 router.put("/update_product", checkUser, storeControllers.updateProduct);
 
 async function checkUser(req: Request, res: Response, next: NextFunction) {
-  const authHeader = req.headers;
-  const user = await User.findOne({ email: authHeader.email });
+  const { email } = req.headers;
+  const user = await User.findOne({ email });
 
   if (!user) {
     return res.status(404).json({ msg: "Usuário não encontrado!" });

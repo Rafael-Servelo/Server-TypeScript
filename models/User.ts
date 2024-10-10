@@ -28,6 +28,8 @@ const User = mongoose.model("User", {
     type: String,
   },
   isAdm: Boolean,
+  favorites: Array<object>,
+  shoppingCart: Array<object>,
   passwordResetToken: String,
   passwordResetExpires: Date,
 } as any);

@@ -186,6 +186,7 @@ const registerProduct = async (req: Request, res: Response) => {
   }
 };
 
+// Delete Product
 const deleteProduct = async (req: Request, res: Response) => {
   const { id, email } = req.body;
   const store = await Store.deleteOne({
@@ -214,6 +215,7 @@ const deleteProduct = async (req: Request, res: Response) => {
   }
 };
 
+// Update Product
 const updateProduct = async (req: Request, res: Response) => {
   const { id } = req.headers;
 
@@ -238,10 +240,40 @@ const updateProduct = async (req: Request, res: Response) => {
   }
 };
 
+//Add product in favotites
+const addFavorites = async (req: Request, res: Response) => {
+  const { productID } = req.body;
+  const { id } = req.headers;
+  const user = await User.findOne({ _id: id });
+  const item = await Store.findOne({ id: productID });
+  let newArray = [] as Array<object>;
+
+  newArray = user.favorites;
+  newArray.push(item);
+
+  const userUpdate = await User.findOneAndUpdate(
+    { _id: id },
+    {
+      favorites: newArray,
+    }
+  );
+
+  if (!item) {
+    return res.status(422).json({ msg: "Produto não encontrado!" });
+  }
+  if (!id) {
+    return res.status(422).json({ msg: "Necessário passar a ID do usuário!" });
+  }
+  if (userUpdate) {
+    return res.status(200).json({ msg: "Produto adicionado com sucesso!" });
+  }
+};
+
 export default {
   open,
   registerProduct,
   search,
   deleteProduct,
   updateProduct,
+  addFavorites,
 };
