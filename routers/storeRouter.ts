@@ -9,6 +9,7 @@ router.get("/products", storeControllers.open);
 router.post("/set_product", checkUser, storeControllers.registerProduct);
 router.post("/add_favorites", storeControllers.addFavorites);
 router.delete("/delete_product", storeControllers.deleteProduct);
+router.delete("/remove_favorites", storeControllers.removeFavorites);
 router.put("/update_product", checkUser, storeControllers.updateProduct);
 
 async function checkUser(req: Request, res: Response, next: NextFunction) {

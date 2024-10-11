@@ -189,9 +189,7 @@ const registerProduct = async (req: Request, res: Response) => {
 // Delete Product
 const deleteProduct = async (req: Request, res: Response) => {
   const { id, email } = req.body;
-  const store = await Store.deleteOne({
-    id,
-  });
+  const store = await Store.deleteOne({ id });
   const adm = await User.findOne({ email });
 
   if (!adm) {
@@ -240,7 +238,7 @@ const updateProduct = async (req: Request, res: Response) => {
   }
 };
 
-//Add product in favotites
+// Add product in favotites
 const addFavorites = async (req: Request, res: Response) => {
   const { productID } = req.body;
   const { id } = req.headers;
@@ -269,6 +267,44 @@ const addFavorites = async (req: Request, res: Response) => {
   }
 };
 
+// Remove product in favotites
+const removeFavorites = async (req: Request, res: Response) => {
+  const { id, productID } = req.query;
+  const user = await User.findById({ _id: id });
+  const item = await Store.findOne({ id: productID });
+  let newArray = [] as Array<object>;
+
+  if (!item) {
+    return res.status(422).json({ msg: "Produto não encontrado!" });
+  }
+  if (!id) {
+    return res.status(422).json({ msg: "Necessário passar a ID do usuário!" });
+  }
+
+  if (!id) {
+    return res.status(422).json({ msg: "ID do usuário inválida!" });
+  }
+
+  newArray = user.favorites;
+  let pos = newArray.map((product: any) => {
+    return product.id;
+  });
+  let index = pos.indexOf(item.id);
+
+  if (index > -1) {
+    newArray.splice(index, 1);
+  }
+
+  const store = await User.findOneAndUpdate(
+    { _id: id },
+    { favorites: newArray }
+  );
+
+  if (store) {
+    return res.status(200).json({ msg: "Produto removido com sucesso!" });
+  }
+};
+
 export default {
   open,
   registerProduct,
@@ -276,4 +312,5 @@ export default {
   deleteProduct,
   updateProduct,
   addFavorites,
+  removeFavorites,
 };
