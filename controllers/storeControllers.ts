@@ -244,9 +244,12 @@ const addFavorites = async (req: Request, res: Response) => {
   const { id } = req.headers;
   const user = await User.findOne({ _id: id });
   const item = await Store.findOne({ id: productID });
-  let newArray = [] as Array<object>;
+  let newArray = user.favorites
 
-  newArray = user.favorites;
+  if(item === null){
+    return res.status(422).json({msg: "Ocorreu algum erro na requisição, verifique a payload e tente novamente."})
+  }
+
   newArray.push(item);
 
   const userUpdate = await User.findOneAndUpdate(
