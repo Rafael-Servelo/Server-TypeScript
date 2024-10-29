@@ -16,7 +16,7 @@ const app = express();
 const baseDir = `${__dirname}/public/`;
 const httpServer = http.createServer(app);
 const io = new Server(httpServer, {
-  path: "/socket.io",
+  path: "/server/socket.io",
   cors: {
     origin: "*"
   }
