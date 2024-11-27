@@ -250,7 +250,7 @@ const addFavorites = async (req: Request, res: Response) => {
     return res.status(422).json({msg: "Ocorreu algum erro na requisição, verifique a payload e tente novamente."})
   }
 
-  newArray.push(item);
+  newArray.push(item.id);
 
   const userUpdate = await User.findOneAndUpdate(
     { _id: id },
@@ -290,12 +290,16 @@ const removeFavorites = async (req: Request, res: Response) => {
 
   newArray = user.favorites;
   let pos = newArray.map((product: any) => {
-    return product.id;
+    return product;
   });
+
+  
   let index = pos.indexOf(item.id);
 
   if (index > -1) {
     newArray.splice(index, 1);
+  } else {
+    return res.status(422).json({ msg: "Item não encontrado nos favoritos!" });
   }
 
   const store = await User.findOneAndUpdate(
