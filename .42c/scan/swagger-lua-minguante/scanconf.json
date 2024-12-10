@@ -1,0 +1,329 @@
+{
+  "version": "2.0.0",
+  "runtimeConfiguration": {
+    "environment": "default",
+    "laxTestingModeEnabled": false,
+    "apiConnectivityCheck": true,
+    "logLevel": "error",
+    "logDestination": "stdout+platform",
+    "logMaxFileSize": 2147483648,
+    "requestHeaderNameRequestId": "x-scan-request-id",
+    "requestHeaderNameScenarioId": "x-scan-scenario-id",
+    "requestHeaderNameRequestType": "x-scan-request-type",
+    "requestFlowrate": 100,
+    "requestTimeout": 30,
+    "requestTlsInsecureSkipVerify": true,
+    "responseFollowRedirection": false,
+    "responseMaxBodySizeScan": 10485760,
+    "happyPathOnly": false,
+    "maxRequestRetryAttempts": 5,
+    "maxScanDuration": 1800,
+    "memoryLimit": 2147483648,
+    "memoryTimeSpan": 10,
+    "reportMaxRequestSizeHappyPath": 8092,
+    "reportMaxRequestSizeTest": 8092,
+    "reportIncludeRequestBody": true,
+    "reportIncludeResponseBody": true,
+    "reportMaxHttpResponseSizeHappyPath": 8092,
+    "reportMaxBodySizeHappyPath": 8092,
+    "reportMaxHttpResponseSizeTest": 8092,
+    "reportMaxBodySizeTest": 8092,
+    "reportIssuesOnly": false,
+    "reportMaxIssues": 1000,
+    "reportMaxSize": 20971520,
+    "reportGenerateCurlCommand": true
+  },
+  "customizations": {
+    "happyPaths": {
+      "retry": 1,
+      "responsePolicy": {
+        "httpStatusExpected": true,
+        "mustBeConformant": true
+      },
+      "httpStatusExpected": []
+    },
+    "tests": {
+      "responsePolicy": {
+        "httpStatusExpected": true,
+        "mustBeConformant": true
+      }
+    }
+  },
+  "environments": {
+    "default": {
+      "variables": {
+        "auth": {
+          "name": "SCAN42C_SECURITY_AUTH",
+          "from": "environment",
+          "required": true
+        },
+        "host": {
+          "name": "SCAN42C_HOST",
+          "from": "environment",
+          "required": false,
+          "default": "https://luaminguante.store/server"
+        }
+      }
+    }
+  },
+  "operations": {
+    "/auth/forgot_password:post": {
+      "operationId": "/auth/forgot_password:post",
+      "request": {
+        "operationId": "/auth/forgot_password:post",
+        "request": {
+          "type": "42c",
+          "details": {
+            "operationId": "/auth/forgot_password:post",
+            "method": "POST",
+            "url": "{{host}}/auth/forgot_password",
+            "headers": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "requestBody": {
+              "mode": "json",
+              "json": {}
+            }
+          }
+        },
+        "defaultResponse": "200",
+        "responses": {
+          "200": {
+            "expectations": {
+              "httpStatus": 200
+            }
+          },
+          "400": {
+            "expectations": {
+              "httpStatus": 400
+            }
+          },
+          "404": {
+            "expectations": {
+              "httpStatus": 404
+            }
+          }
+        }
+      },
+      "scenarios": [
+        {
+          "key": "happy.path",
+          "requests": [
+            {
+              "fuzzing": true,
+              "$ref": "#/operations/~1auth~1forgot_password:post/request"
+            }
+          ],
+          "fuzzing": true
+        }
+      ]
+    },
+    "/auth/login:post": {
+      "operationId": "/auth/login:post",
+      "request": {
+        "operationId": "/auth/login:post",
+        "request": {
+          "type": "42c",
+          "details": {
+            "operationId": "/auth/login:post",
+            "method": "POST",
+            "url": "{{host}}/auth/login",
+            "headers": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "requestBody": {
+              "mode": "json",
+              "json": {
+                "email": "rafael.servelo@hotmail.com",
+                "password": "@Rss0921"
+              }
+            }
+          }
+        },
+        "defaultResponse": "200",
+        "responses": {
+          "200": {
+            "expectations": {
+              "httpStatus": 200
+            }
+          },
+          "404": {
+            "expectations": {
+              "httpStatus": 404
+            }
+          },
+          "422": {
+            "expectations": {
+              "httpStatus": 422
+            }
+          }
+        }
+      },
+      "scenarios": [
+        {
+          "key": "happy.path",
+          "requests": [
+            {
+              "fuzzing": true,
+              "$ref": "#/operations/~1auth~1login:post/request"
+            }
+          ],
+          "fuzzing": true
+        }
+      ]
+    },
+    "/auth/register:post": {
+      "operationId": "/auth/register:post",
+      "request": {
+        "operationId": "/auth/register:post",
+        "request": {
+          "type": "42c",
+          "details": {
+            "operationId": "/auth/register:post",
+            "method": "POST",
+            "url": "{{host}}/auth/register",
+            "headers": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "requestBody": {
+              "mode": "json",
+              "json": {}
+            }
+          }
+        },
+        "defaultResponse": "201",
+        "responses": {
+          "201": {
+            "expectations": {
+              "httpStatus": 201
+            }
+          },
+          "422": {
+            "expectations": {
+              "httpStatus": 422
+            }
+          }
+        }
+      },
+      "scenarios": [
+        {
+          "key": "happy.path",
+          "requests": [
+            {
+              "fuzzing": true,
+              "$ref": "#/operations/~1auth~1register:post/request"
+            }
+          ],
+          "fuzzing": true
+        }
+      ]
+    },
+    "privateRoute": {
+      "operationId": "privateRoute",
+      "request": {
+        "operationId": "privateRoute",
+        "auth": [
+          "auth"
+        ],
+        "request": {
+          "type": "42c",
+          "details": {
+            "operationId": "privateRoute",
+            "method": "GET",
+            "url": "{{host}}/auth/{userID}",
+            "paths": [
+              {
+                "key": "userID",
+                "value": "rgpugrkorotrltuxopntvorsaiiudnzm"
+              }
+            ]
+          }
+        },
+        "defaultResponse": "200",
+        "responses": {
+          "200": {
+            "expectations": {
+              "httpStatus": 200
+            }
+          },
+          "404": {
+            "expectations": {
+              "httpStatus": 404
+            }
+          }
+        }
+      },
+      "scenarios": [
+        {
+          "key": "happy.path",
+          "requests": [
+            {
+              "fuzzing": true,
+              "$ref": "#/operations/privateRoute/request"
+            }
+          ],
+          "fuzzing": true
+        }
+      ]
+    },
+    "publicRoute": {
+      "operationId": "publicRoute",
+      "request": {
+        "operationId": "publicRoute",
+        "request": {
+          "type": "42c",
+          "details": {
+            "operationId": "publicRoute",
+            "method": "GET",
+            "url": "{{host}}/auth"
+          }
+        },
+        "defaultResponse": "200",
+        "responses": {
+          "200": {
+            "expectations": {
+              "httpStatus": 200
+            }
+          }
+        }
+      },
+      "scenarios": [
+        {
+          "key": "happy.path",
+          "requests": [
+            {
+              "fuzzing": true,
+              "$ref": "#/operations/publicRoute/request"
+            }
+          ],
+          "fuzzing": true
+        }
+      ]
+    }
+  },
+  "authenticationDetails": [
+    {
+      "auth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "authorization",
+        "default": "auth",
+        "credentials": {
+          "auth": {
+            "credential": "{{auth}}",
+            "description": "auth security"
+          }
+        }
+      }
+    }
+  ]
+}
