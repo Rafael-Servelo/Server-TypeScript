@@ -242,6 +242,37 @@ const resetPassword = async (req: Request, res: Response) => {
   }
 };
 
+const updateUser = async (req: Request, res: Response) => {
+  const { id } = req.query;
+  const body = req.body;
+  const user = await User.findById(id);
+  let update = {} as any;
+
+  update = user;
+
+  Object.keys(body).map((e) => {
+    update[e] = body[e];
+  });
+
+  const updateDB = await User.findByIdAndUpdate(id, update)
+
+  if (!id) {
+    return res.status(422).json({ msg: "ID do usuário é obrigatório!" });
+  }
+
+  if (user === null) {
+    res.status(400).send({ msg: "Usuário não encontrado" });
+  }
+
+  if (updateDB === null) {
+    res.status(400).send({ msg: "Usuário não encontrado" });
+  }
+
+  if (updateDB) {
+    res.status(200).send({ msg: "Usuário Atualizado" });
+  }
+};
+
 export default {
   open,
   openID,
@@ -249,4 +280,5 @@ export default {
   login,
   forgot,
   resetPassword,
+  updateUser,
 };
