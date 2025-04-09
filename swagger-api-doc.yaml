@@ -8,7 +8,8 @@ info:
     email: rafael.servelo@gmail.com
 servers:
   - description: Server Lua Minguante
-    url: https://luaminguante.store/server
+    url: http://127.0.0.1:3000/server
+    # url: https://luaminguante.store/server
 security:
   - auth: []
 tags:
@@ -102,6 +103,27 @@ paths:
             format: string
       security:
         - auth: []
+  /auth/update_user:
+    put:
+      tags:
+        - auth
+      summary: Update User
+      description: "Endpoint para atualizar dados do usuário."
+      parameters:
+        - name: id
+          in: query
+          description: ID do usuario para retornar
+          required: true
+          schema:
+            type: string
+            format: string
+      requestBody: 
+        $ref: "#/components/requestBodies/RegisterUser"
+      security:
+        - auth: []
+      responses:
+        "200":
+          description: Usuário Atualizado
   /auth/register:
     post:
       tags:
@@ -121,19 +143,19 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/response"
-        '401':
+        "401":
           description: Unauthorized
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/response"
-        '403':
+        "403":
           description: Unauthorized
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/response"
-        '429':
+        "429":
           description: Unauthorized
           content:
             application/json:
