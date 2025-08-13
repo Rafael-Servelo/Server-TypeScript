@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "vitest",
-    "start": "npm install && npm run build && pm2 start dist/server.js --watch --name Server_Lua-Minguante",
+    "start": "npm install && npm run build",
     "dev": "tsx watch src/server.ts",
     "build": "tsup src"
   },
